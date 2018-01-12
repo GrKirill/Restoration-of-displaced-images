@@ -1,6 +1,6 @@
 # Images_shear
 
-## This is a project where I try to predict images' deformations. Each input image with 
+   This is a project where I try to predict images' deformations. Each input image with 
    generated text into it is deformed in different ways. And my purpose is to build a tensorflow
    model which would be capable to predict 8 deformation values(each angle has 2 coordinates so
    if we shift all angles --> 8 values are changed).
