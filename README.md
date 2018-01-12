@@ -9,7 +9,10 @@
   * Image size 400x600
   * Each input image has text into it
   * The size of text letters ranges from 1 to 3
-  * The fond of text letters ranges from 1 to 3
-  * All input images are deformed: each angle is shifted along the sides of the image.A shift value ranges from 0 to 0.2 
-    of the width and height of the initial image.
+  * The fond of text letters can be one of three types
+  * All input images are deformed: each angle is shifted inward along the sides of the image.A shift value ranges from 0 to 0.2 of the width and height of the initial image.
+  * Model and training set generator must be defined in individual files to be readable
+# Results:
+ * In Data_generator notebook we can see training examples
+ * In Model notebook we can see the Tensorflow model, its training and validation results
   
