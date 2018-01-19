@@ -2,6 +2,8 @@ import random
 import numpy as np
 import tensorflow as tf
 import math
+import matplotlib.pyplot as plt
+from scipy.interpolate import spline
 
 
 
@@ -77,7 +79,7 @@ class Model():
 
 					epoch_cost += minibatch_cost / num_minibatches
 
-				if epoch % 2 == 0:
+				if epoch % 1 == 0:
 					epochs.append(epoch)
 					self._sess.run(cost, feed_dict={self.X: x_validation, self.Y: new_y_validation})
 					print ("Cost after epoch %i: %f" % (epoch, epoch_cost))
