@@ -13,6 +13,6 @@
   * All input images are deformed: each angle is shifted inward along the sides of the image.A shift value ranges from 0 to 0.2 of the width and height of the initial image.
   * Model and training set generator must be defined in individual files to be readable
 # Results:
- * In Data_generator notebook we can see training examples
- * In Model notebook we can see the Tensorflow model, its training and validation results
+ * In Data_generator notebook you can see training examples
+ * In Model notebook you can see a Tensorflow model with its results on training,validation and test sets.
   
