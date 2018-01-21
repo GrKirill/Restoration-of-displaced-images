@@ -3,6 +3,7 @@ import numpy as np
 import tensorflow as tf
 import math
 import matplotlib.pyplot as plt
+import pandas as pd
 from scipy.interpolate import spline
 
 
@@ -80,19 +81,13 @@ class Model():
 					epoch_cost += minibatch_cost / num_minibatches
 
 				if epoch % 1 == 0:
-					epochs.append(epoch)
-					self._sess.run(cost, feed_dict={self.X: x_validation, self.Y: new_y_validation})
-					print ("Cost after epoch %i: %f" % (epoch, epoch_cost))
-
-				costs.append(epoch_cost)
-		# plot the cost
-		x = np.array(epochs)
-		xnew = np.linspace(x.min(),x.max(),20)
-		power_smooth = spline(x,costs,xnew)
-		plt.plot(xnew,power_smooth)
-		plt.ylabel('cost')
-		plt.xlabel('iterations (per tens)')
-		plt.title("Learning rate =" + str(learning_rate))
+					#epochs.append(epoch)
+					val_cost = self._sess.run(cost, feed_dict={self.X: x_validation, self.Y: new_y_validation})
+					costs.append((epoch_cost, val_cost))                   
+					print ("Cost on validation set after epoch %i: %f" % (epoch, epoch_cost))
+               
+		pd_cost = pd.DataFrame(costs, columns=['tr_loss', 'val_loss'])
+		pd_cost.plot(figsize=(10, 5))
 		plt.show()
 	def predict(self, X_test):
 		return self._sess.run(self.out, feed_dict={self.X:X_test})
