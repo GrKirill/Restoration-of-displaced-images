@@ -46,48 +46,49 @@ class Model():
 		tf.set_random_seed(1)
 		m = X_train.shape[0] 
 		seed = 3
-		costs = [] 
-		epochs = []
+		val_costs = [] 
 		self.X = tf.placeholder(tf.float32, shape=[None,600,400,3])
 		self.Y = tf.placeholder(tf.float32, shape=[None,8,])
 
 		#CNN structure(convolution + pooling)
-		conv1 = tf.layers.conv2d(inputs=self.X, filters=10, kernel_size=[3,3], padding="same", activation=tf.nn.relu)
+		conv1 = tf.layers.conv2d(inputs=self.X/255., filters=10, kernel_size=[3,3], padding="valid", activation=tf.nn.relu)
 		pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[2, 2], strides=2)
-		conv2 = tf.layers.conv2d(inputs=pool1,filters=5,kernel_size=[3,3],padding="same",activation=tf.nn.relu)
+		conv2 = tf.layers.conv2d(inputs=pool1,filters=16,kernel_size=[3,3],padding="valid",activation=tf.nn.relu)
 		pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[2, 2], strides=2)
 	
 		#fully-connected
 		flattened = tf.contrib.layers.flatten(pool2)
 		self.out = tf.contrib.layers.fully_connected(inputs = flattened, num_outputs = 8, activation_fn=None)
 
-		cost = tf.losses.mean_squared_error(labels=self.Y, predictions=self.out)
+		cost = tf.reduce_mean(tf.squared_difference(self.out, self.Y), 0)
 		optimizer = tf.train.AdamOptimizer(learning_rate = learning_rate).minimize(cost)
 
 		self._sess.run(tf.global_variables_initializer())
-		loss_list = []
-		epoch_number = []
+        
 		for epoch in range(1, num_epochs+1):
-				epoch_cost = 0.
+				i = 0
 				seed = seed + 1
 				num_minibatches = int(m / minibatch_size)
-				minibatches = random_mini_batches(X_train, Y_train, mini_batch_size = minibatch_size, seed = 0)
+				minibatches = random_mini_batches(X_train, Y_train, mini_batch_size = minibatch_size, seed = seed)
 				for minibatch in minibatches:
-
+					i = i+1
 					(minibatch_X, minibatch_Y) = minibatch
 
-					_ , minibatch_cost = self._sess.run([optimizer, cost], feed_dict={self.X: minibatch_X, self.Y: minibatch_Y})
+					self._sess.run(optimizer, feed_dict={self.X: minibatch_X, self.Y: minibatch_Y})
 
-					epoch_cost += minibatch_cost / num_minibatches
+					if i % 100 == 0:  
+						val_cost = self._sess.run(cost, feed_dict={self.X: x_validation, self.Y: y_validation})
+						print("Epoch {}: val_cost {}".format(epoch,val_cost))
+						val_costs.append(val_cost) 
+                    
+		data_loss = {'val_cost':[]}
+		for i in range(len(val_costs)):
+			data_loss['val_cost'].append(np.mean(val_costs[i]))
 
-				if epoch % 1 == 0:
-					#epochs.append(epoch)
-					val_cost = self._sess.run(cost, feed_dict={self.X: x_validation, self.Y: new_y_validation})
-					costs.append((epoch_cost, val_cost))                   
-					print ("Cost on validation set after epoch %i: %f" % (epoch, epoch_cost))
-               
-		pd_cost = pd.DataFrame(costs, columns=['tr_loss', 'val_loss'])
-		pd_cost.plot(figsize=(10, 5))
+		plot_loss = pd.DataFrame(data_loss['val_cost'], columns=['val_cost'])
+		ax = plot_loss.plot(figsize=(20, 5))
+		ax.set_xlabel("Step")
+		ax.set_ylabel("loss") 
 		plt.show()
 	def predict(self, X_test):
 		return self._sess.run(self.out, feed_dict={self.X:X_test})
