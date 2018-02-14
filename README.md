@@ -20,5 +20,5 @@
  * In Model notebook you can see a Tensorflow model with its results on training,validation and test sets [here](https://github.com/NevzaimnayaLove/images_shear/blob/master/Model.ipynb)
  * Visualised restired images
  
- <img src="Initial.pdg" width="900px">
+ <img src="Initial.png" width="900px">
   
