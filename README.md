@@ -13,12 +13,12 @@
   * All input images are deformed: each angle is shifted inward along the sides of the image.A shift value ranges from 0 to 0.2 of the width and height of the initial image.
   * Model and training set generator must be defined in individual files to be readable
   
-  <img src="Initial.png" width="900px">
+  <img src="Restored.png" width="900px">
   
 # Results:
  * In Data_generator notebook you can see training examples [here](https://github.com/NevzaimnayaLove/images_shear/blob/master/Data_generator.ipynb)
  * In Model notebook you can see a Tensorflow model with its results on training,validation and test sets [here](https://github.com/NevzaimnayaLove/images_shear/blob/master/Model.ipynb)
  * Visualised restired images
  
- <img src="Restored.png" width="900px">
+ <img src="Initial.pdg" width="900px">
   
