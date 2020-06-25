@@ -1,4 +1,4 @@
-# Images_shear
+# Restoration-of-displaced-images
 
    This is a project where I try to predict images' deformations. Each input image with 
    generated text into it is deformed in different ways. And my purpose is to build a tensorflow
